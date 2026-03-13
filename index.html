@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bel Otomatis</title>
+<meta name="theme-color" content="#4faaff">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bel Otomatis">
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -67,9 +73,21 @@
     </div>
 
     <div class="fg full">
-      <div class="check-row">
-        <input type="checkbox" id="inRepeat" checked />
-        <label for="inRepeat">🔁 Ulangi setiap hari (centang = aktif setiap hari)</label>
+      <label>Hari Aktif</label>
+      <div class="day-picker">
+        <button type="button" class="day-btn" data-day="1">Sen</button>
+        <button type="button" class="day-btn" data-day="2">Sel</button>
+        <button type="button" class="day-btn" data-day="3">Rab</button>
+        <button type="button" class="day-btn" data-day="4">Kam</button>
+        <button type="button" class="day-btn" data-day="5">Jum</button>
+        <button type="button" class="day-btn" data-day="6">Sab</button>
+        <button type="button" class="day-btn" data-day="0">Min</button>
+      </div>
+      <div class="day-shortcuts">
+        <button type="button" class="btn-shortcut" onclick="pilihHari('semua')">Semua</button>
+        <button type="button" class="btn-shortcut" onclick="pilihHari('senin-jumat')">Sen–Jum</button>
+        <button type="button" class="btn-shortcut" onclick="pilihHari('weekend')">Weekend</button>
+        <button type="button" class="btn-shortcut" onclick="pilihHari('none')">Reset</button>
       </div>
     </div>
 
@@ -95,7 +113,7 @@
           <th>Nama</th>
           <th>Waktu</th>
           <th>Suara</th>
-          <th>Ulang</th>
+          <th>Hari</th>
           <th>Status</th>
           <th>Aksi</th>
         </tr>
@@ -106,5 +124,10 @@
 </div>
 
 <script src="script.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js');
+  }
+</script>
 </body>
 </html>

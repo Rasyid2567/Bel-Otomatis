@@ -1,7 +1,7 @@
-// DATA
+// ==================== DATA ====================
 let jadwal = JSON.parse(localStorage.getItem('bel_jadwal') || '[]');
 
-// MUSIK CUSTOM
+// ==================== MUSIK CUSTOM ====================
 let customMusik = [];
 let currentAudio = null;
 let lastValidSuara = 'ding';
@@ -28,7 +28,6 @@ function handleUpload(input) {
   customMusik.push({ id, nama, url });
   addCustomOption(id, nama);
 
-  // Langsung pilih musik yang baru diupload
   const sel = document.getElementById('inSuara');
   sel.value = id;
   lastValidSuara = id;
@@ -43,7 +42,36 @@ function addCustomOption(id, nama) {
   sel.add(opt, sepIdx);
 }
 
-// CLOCK
+// ==================== DAY PICKER ====================
+document.querySelectorAll('.day-btn').forEach(btn => {
+  btn.addEventListener('click', () => btn.classList.toggle('active'));
+});
+
+function pilihHari(mode) {
+  document.querySelectorAll('.day-btn').forEach(btn => {
+    const d = parseInt(btn.dataset.day);
+    if (mode === 'semua')        btn.classList.add('active');
+    else if (mode === 'none')    btn.classList.remove('active');
+    else if (mode === 'senin-jumat') btn.classList.toggle('active', d >= 1 && d <= 5);
+    else if (mode === 'weekend') btn.classList.toggle('active', d === 0 || d === 6);
+  });
+}
+
+function getSelectedDays() {
+  return [...document.querySelectorAll('.day-btn.active')].map(b => parseInt(b.dataset.day));
+}
+
+const NAMA_HARI = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+
+function formatHari(days) {
+  if (!days || days.length === 0) return '—';
+  if (days.length === 7) return '🔁 Setiap hari';
+  if (JSON.stringify([...days].sort()) === JSON.stringify([1,2,3,4,5])) return 'Sen–Jum';
+  if (JSON.stringify([...days].sort()) === JSON.stringify([0,6])) return 'Weekend';
+  return days.map(d => NAMA_HARI[d]).join(', ');
+}
+
+// ==================== CLOCK ====================
 const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
@@ -62,12 +90,14 @@ function updateClock() {
   if (S === '00') {
     const nowHM = `${H}:${M}`;
     if (nowHM !== lastRingKey) {
+      const hariIni = now.getDay();
       jadwal.forEach(j => {
-        if (j.waktu === nowHM) {
+        if (j.waktu === nowHM && j.hari.includes(hariIni)) {
           lastRingKey = nowHM;
           bunyikanBel(j.suara);
           tampilkanNotif(j.nama, j.waktu);
-          if (!j.repeat) {
+          // Tandai done jika hanya 1x (tidak ada hari aktif berulang)
+          if (j.hari.length === 0) {
             j.done = true;
             simpan();
           }
@@ -80,19 +110,20 @@ function updateClock() {
   updateNextBell();
 }
 
-// NEXT BELL INFO 
+// ==================== NEXT BELL INFO ====================
 function updateNextBell() {
   const now = new Date();
   const nowMin = now.getHours() * 60 + now.getMinutes();
+  const hariIni = now.getDay();
 
-  const aktif = jadwal.filter(j => !j.done);
+  const aktif = jadwal.filter(j => !j.done && j.hari.includes(hariIni));
   let next = null;
   let minDiff = Infinity;
 
   aktif.forEach(j => {
     const [h, m] = j.waktu.split(':').map(Number);
     let diff = h * 60 + m - nowMin;
-    if (diff < 0 && j.repeat) diff += 1440;
+    if (diff < 0) diff += 1440;
     if (diff > 0 && diff < minDiff) {
       minDiff = diff;
       next = j;
@@ -105,11 +136,11 @@ function updateNextBell() {
     const mnt = minDiff % 60;
     el.textContent = `Bel berikut: ${next.nama} — ${jam > 0 ? jam + 'j ' : ''}${mnt}mnt lagi`;
   } else {
-    el.textContent = 'Tidak ada jadwal aktif';
+    el.textContent = 'Tidak ada jadwal aktif hari ini';
   }
 }
 
-// AUDIO ENGINE
+// ==================== AUDIO ENGINE ====================
 let audioCtx;
 function getCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -184,7 +215,7 @@ function testSound() {
   bunyikanBel(document.getElementById('inSuara').value);
 }
 
-// NOTIF
+// ==================== NOTIF ====================
 let notifTimer;
 function tampilkanNotif(nama, waktu) {
   clearTimeout(notifTimer);
@@ -195,17 +226,18 @@ function tampilkanNotif(nama, waktu) {
   notifTimer = setTimeout(() => el.classList.remove('show'), 5000);
 }
 
-// CRUD
+// ==================== CRUD ====================
 function tambahJadwal() {
   const nama = document.getElementById('inNama').value.trim();
   const waktu = document.getElementById('inWaktu').value;
   const suara = document.getElementById('inSuara').value;
-  const repeat = document.getElementById('inRepeat').checked;
+  const hari = getSelectedDays();
 
   if (!nama) return alert('⚠️ Nama jadwal tidak boleh kosong!');
   if (!waktu) return alert('⚠️ Waktu tidak boleh kosong!');
+  if (hari.length === 0) return alert('⚠️ Pilih minimal 1 hari aktif!');
 
-  jadwal.push({ id: Date.now(), nama, waktu, suara, repeat, done: false });
+  jadwal.push({ id: Date.now(), nama, waktu, suara, hari, done: false });
   jadwal.sort((a, b) => a.waktu.localeCompare(b.waktu));
   simpan();
   renderTabel();
@@ -226,6 +258,7 @@ function simpan() {
   localStorage.setItem('bel_jadwal', JSON.stringify(jadwal));
 }
 
+// ==================== RENDER ====================
 function getSuaraLabel(jenis) {
   if (jenis.startsWith('custom_')) {
     const m = customMusik.find(m => m.id === jenis);
@@ -237,15 +270,20 @@ function getSuaraLabel(jenis) {
 
 function getStatusBadge(j) {
   if (j.done) return '<span class="badge b-done">✓ Selesai</span>';
+
   const now = new Date();
+  const hariIni = now.getDay();
   const nowMin = now.getHours() * 60 + now.getMinutes();
   const [h, m] = j.waktu.split(':').map(Number);
   const jadMin = h * 60 + m;
   const diff = jadMin - nowMin;
 
+  // Hari ini tidak aktif
+  if (!j.hari.includes(hariIni)) return '<span class="badge b-skip">⏭ Bukan harinya</span>';
+
   if (diff === 0) return '<span class="badge b-now">🔔 Sekarang!</span>';
   if (diff > 0 && diff <= 10) return `<span class="badge b-soon">⏳ ${diff} mnt lagi</span>`;
-  if (!j.repeat && diff < 0) return '<span class="badge b-done">✓ Selesai</span>';
+  if (diff < 0) return '<span class="badge b-done">✓ Selesai hari ini</span>';
   return '<span class="badge b-active">✅ Aktif</span>';
 }
 
@@ -269,7 +307,7 @@ function renderTabel() {
       <td><strong>${j.nama}</strong></td>
       <td style="font-size:15px;font-weight:800;letter-spacing:1px">${j.waktu}</td>
       <td>${getSuaraLabel(j.suara)}</td>
-      <td>${j.repeat ? '🔁' : '1×'}</td>
+      <td>${formatHari(j.hari)}</td>
       <td>${getStatusBadge(j)}</td>
       <td>
         <div style="display:flex;gap:5px">
@@ -281,7 +319,7 @@ function renderTabel() {
   `).join('');
 }
 
-//INIT
+// ==================== INIT ====================
 renderTabel();
 updateClock();
 setInterval(updateClock, 1000);
