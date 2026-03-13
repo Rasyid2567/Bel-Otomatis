@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bel Otomatis</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --card: #fffdf8;
+    --primary: #4faaff;
+    --primary-light: #e8f4ff;
+    --accent: #2d5016;
+    --text: #1a1a1a;
+    --text-muted: #7a7060;
+    --border: #e0d8cc;
+    --red: #c0392b;
+    --green: #27ae60;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .bell-icon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 8px;
+    animation: swing 3s ease-in-out infinite;
+    transform-origin: top center;
+  }
+
+  @keyframes swing {
+    0%, 100% { transform: rotate(0deg); }
+    15% { transform: rotate(10deg); }
+    30% { transform: rotate(-10deg); }
+    45% { transform: rotate(6deg); }
+    60% { transform: rotate(-6deg); }
+    75% { transform: rotate(2deg); }
+  }
+
+  @keyframes ring {
+    0%, 100% { transform: rotate(0); }
+    20% { transform: rotate(25deg); }
+    40% { transform: rotate(-25deg); }
+    60% { transform: rotate(15deg); }
+    80% { transform: rotate(-15deg); }
+  }
+
+  .bell-icon.ringing { animation: ring 0.15s linear 8; }
+
+  .header h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .header p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  /* Clock */
+  .clock-bar {
+    background: var(--primary);
+    color: white;
+    border-radius: 16px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 16px rgba(79,170,255,0.3);
+  }
+
+  .time-display {
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 1;
+  }
+
+  .date-display {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .status-area { text-align: right; }
+
+  .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #4ade80;
+    display: inline-block;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.35);
+    animation: pulse 2s infinite;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+
+  @keyframes pulse {
+    50% { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); }
+  }
+
+  .status-text { font-size: 13px; opacity: 0.85; }
+  .next-bell { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+
+  /* Card */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Form */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .fg { display: flex; flex-direction: column; gap: 5px; }
+  .fg.full { grid-column: 1 / -1; }
+
+  label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+  }
+
+  input[type="text"], input[type="time"], select {
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    background: white;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  input:focus, select:focus { border-color: var(--primary); }
+
+  .row-flex { display: flex; gap: 8px; align-items: center; }
+  .row-flex select { flex: 1; }
+
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .check-row input[type="checkbox"] {
+    width: 17px; height: 17px;
+    accent-color: var(--primary);
+    cursor: pointer;
+  }
+
+  .check-row label {
+    font-size: 13px;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 12px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .btn-primary:hover { background: #2e96f0; }
+
+  .btn-sm {
+    padding: 5px 11px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+
+  .btn-play { background: #e8f4e8; color: #166534; }
+  .btn-play:hover { background: #d1f0d1; }
+
+  .btn-del { background: #fee2e2; color: var(--red); }
+  .btn-del:hover { background: #fecaca; }
+
+  .btn-test { background: var(--primary-light); color: var(--primary); padding: 9px 14px; font-size: 13px; border-radius: 9px; }
+  .btn-test:hover { background: #d0eaff; }
+
+  /* Table */
+  .table-wrap { width: 100%; overflow: hidden; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: auto;
+  }
+
+  thead { background: var(--primary-light); }
+
+  th {
+    padding: 9px 10px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--primary);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 10px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #faf7f2; }
+
+  /* Kolom nama boleh wrap, sisanya nowrap */
+  td:nth-child(2) { word-break: break-word; }
+  td:nth-child(1), td:nth-child(3),
+  td:nth-child(4), td:nth-child(5),
+  td:nth-child(6), td:nth-child(7) { white-space: nowrap; }
+
+  @media (max-width: 560px) {
+    th:nth-child(1), td:nth-child(1),
+    th:nth-child(4), td:nth-child(4),
+    th:nth-child(5), td:nth-child(5) { display: none; }
+    th, td { padding: 8px 7px; font-size: 12px; }
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .b-active { background: #dcfce7; color: #15803d; }
+  .b-done { background: #f1f5f9; color: #64748b; }
+  .b-soon { background: #fef9c3; color: #92400e; }
+  .b-now { background: #fee2e2; color: #b91c1c; }
+
+  .empty-state {
+    text-align: center;
+    padding: 36px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state .ei { font-size: 36px; margin-bottom: 8px; }
+
+  /* Notification */
+  .notif-overlay {
+    position: fixed;
+    top: 16px; right: 16px;
+    background: var(--accent);
+    color: white;
+    padding: 14px 18px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 9999;
+    transform: translateX(300%);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-width: 280px;
+  }
+
+  .notif-overlay.show { transform: translateX(0); }
+  .notif-overlay .nt { font-size: 15px; font-weight: 700; }
+  .notif-overlay .ns { font-size: 12px; opacity: 0.8; margin-top: 2px; }
+
+  @media (max-width: 480px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .time-display { font-size: 30px; }
+  }
+
+  .jadwal-cards { display: none; }
+</style>
+</head>
+<body>
+
+<!-- Notifikasi -->
+<div class="notif-overlay" id="notif">
+  <div class="nt" id="notifTitle">🔔 Bel Berbunyi!</div>
+  <div class="ns" id="notifSub">Waktu: 00:00</div>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <span class="bell-icon" id="bellIcon">🔔</span>
+  <h1>Bel Otomatis</h1>
+  <p>Atur jadwal bel sekolah / kantor dengan mudah</p>
+</div>
+
+<!-- Jam -->
+<div class="clock-bar">
+  <div>
+    <div class="time-display" id="clockDisplay">--:--:--</div>
+    <div class="date-display" id="dateDisplay">Memuat tanggal...</div>
+  </div>
+  <div class="status-area">
+    <div><span class="status-dot"></span><span class="status-text">Sistem Aktif</span></div>
+    <div class="next-bell" id="nextBellInfo">–</div>
+  </div>
+</div>
+
+<!-- Form Input -->
+<div class="card">
+  <div class="card-title">➕ Tambah Jadwal Bel</div>
+  <div class="form-grid">
+
+    <div class="fg">
+      <label>Nama Jadwal</label>
+      <input type="text" id="inNama" placeholder="cth: Masuk Kelas" />
+    </div>
+
+    <div class="fg">
+      <label>Waktu</label>
+      <input type="time" id="inWaktu" />
+    </div>
+
+    <div class="fg full">
+      <label>Pilih Suara Bel</label>
+      <div class="row-flex">
+        <select id="inSuara" onchange="handleSuaraChange(this)">
+          <option value="ding">🔔 Ding — Klasik & lembut</option>
+          <option value="sekolah">🏫 Bel Sekolah — Seperti bel kelas</option>
+          <option value="digital">📱 Digital Beep — Nada modern</option>
+          <option value="lonceng">⛪ Lonceng — Melodi lonceng</option>
+          <option value="alarm">⏰ Alarm — Bunyi keras</option>
+          <option value="triple">✨ Triple Ding — 3x dentingan</option>
+          <option disabled style="color:#ccc">──────────────</option>
+          <option value="__tambah__">➕ Tambah Musik dari File...</option>
+        </select>
+        <input type="file" id="fileMusik" accept="audio/*" style="display:none" onchange="handleUpload(this)" />
+        <button class="btn btn-test" onclick="testSound()">▶ Tes</button>
+      </div>
+    </div>
+
+    <div class="fg full">
+      <div class="check-row">
+        <input type="checkbox" id="inRepeat" checked />
+        <label for="inRepeat">🔁 Ulangi setiap hari (centang = aktif setiap hari)</label>
+      </div>
+    </div>
+
+    <div class="fg full">
+      <button class="btn btn-primary" onclick="tambahJadwal()">+ Tambah ke Daftar</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Tabel -->
+<div class="card">
+  <div class="card-title">📋 Daftar Jadwal Bel</div>
+  <div class="table-wrap">
+    <div id="emptyState" class="empty-state" style="display:none">
+      <div class="ei">📭</div>
+      <div>Belum ada jadwal bel.<br>Tambahkan jadwal di atas.</div>
+    </div>
+    <table id="jadwalTable">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nama</th>
+          <th>Waktu</th>
+          <th>Suara</th>
+          <th>Ulang</th>
+          <th>Status</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+let jadwal = JSON.parse(localStorage.getItem('bel_jadwal') || '[]');
+
+// ==================== MUSIK CUSTOM ====================
+let customMusik = [];
+let currentAudio = null;
+let lastValidSuara = 'ding';
+
+function handleSuaraChange(sel) {
+  if (sel.value === '__tambah__') {
+    sel.value = lastValidSuara; // kembalikan ke pilihan sebelumnya dulu
+    document.getElementById('fileMusik').click();
+  } else {
+    lastValidSuara = sel.value;
+  }
+}
+
+function handleUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 10 * 1024 * 1024) { alert('⚠️ File terlalu besar! Maksimal 10MB.'); return; }
+  if (!file.type.startsWith('audio/')) { alert('⚠️ File harus berformat audio!'); return; }
+
+  const url = URL.createObjectURL(file);
+  const id = 'custom_' + Date.now();
+  const nama = file.name.replace(/\.[^.]+$/, '');
+
+  customMusik.push({ id, nama, url });
+  addCustomOption(id, nama);
+
+  // Langsung pilih musik yang baru diupload
+  const sel = document.getElementById('inSuara');
+  sel.value = id;
+  lastValidSuara = id;
+
+  input.value = '';
+}
+
+function addCustomOption(id, nama) {
+  const sel = document.getElementById('inSuara');
+  // Sisipkan sebelum separator dan opsi "Tambah"
+  const sepIdx = [...sel.options].findIndex(o => o.value === '__tambah__') - 1;
+  const opt = new Option(`🎵 ${nama}`, id);
+  sel.add(opt, sepIdx); // sisipkan sebelum separator
+}
+
+// ==================== CLOCK ====================
+const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+
+let lastRingKey = '';
+
+function updateClock() {
+  const now = new Date();
+  const H = String(now.getHours()).padStart(2,'0');
+  const M = String(now.getMinutes()).padStart(2,'0');
+  const S = String(now.getSeconds()).padStart(2,'0');
+
+  document.getElementById('clockDisplay').textContent = `${H}:${M}:${S}`;
+  document.getElementById('dateDisplay').textContent =
+    `${HARI[now.getDay()]}, ${now.getDate()} ${BULAN[now.getMonth()]} ${now.getFullYear()}`;
+
+  // Cek bel setiap detik ke-00
+  if (S === '00') {
+    const nowHM = `${H}:${M}`;
+    if (nowHM !== lastRingKey) {
+      jadwal.forEach(j => {
+        if (j.waktu === nowHM) {
+          lastRingKey = nowHM;
+          bunyikanBel(j.suara);
+          tampilkanNotif(j.nama, j.waktu);
+          if (!j.repeat) {
+            j.done = true;
+            simpan();
+          }
+        }
+      });
+      renderTabel();
+    }
+  }
+
+  updateNextBell();
+}
+
+// ==================== NEXT BELL INFO ====================
+function updateNextBell() {
+  const now = new Date();
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+
+  const aktif = jadwal.filter(j => !j.done);
+  let next = null;
+  let minDiff = Infinity;
+
+  aktif.forEach(j => {
+    const [h, m] = j.waktu.split(':').map(Number);
+    let diff = h * 60 + m - nowMin;
+    if (diff < 0 && j.repeat) diff += 1440;
+    if (diff > 0 && diff < minDiff) {
+      minDiff = diff;
+      next = j;
+    }
+  });
+
+  const el = document.getElementById('nextBellInfo');
+  if (next) {
+    const jam = Math.floor(minDiff / 60);
+    const mnt = minDiff % 60;
+    el.textContent = `Bel berikut: ${next.nama} — ${jam > 0 ? jam + 'j ' : ''}${mnt}mnt lagi`;
+  } else {
+    el.textContent = 'Tidak ada jadwal aktif';
+  }
+}
+
+// ==================== AUDIO ENGINE ====================
+let audioCtx;
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function tone(ctx, freq, type, start, dur, vol) {
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
+  gain.gain.setValueAtTime(vol, ctx.currentTime + start);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+  osc.start(ctx.currentTime + start);
+  osc.stop(ctx.currentTime + start + dur + 0.01);
+}
+
+const SOUNDS = {
+  ding: ctx => {
+    tone(ctx, 880, 'sine', 0, 2.0, 0.7);
+    tone(ctx, 1320, 'sine', 0.05, 1.2, 0.3);
+  },
+  sekolah: ctx => {
+    [0, 0.35, 0.70, 1.05, 1.40, 1.75].forEach(t => {
+      tone(ctx, 700, 'square', t, 0.25, 0.35);
+    });
+  },
+  digital: ctx => {
+    [440, 550, 660, 770, 880].forEach((f, i) => {
+      tone(ctx, f, 'square', i * 0.18, 0.14, 0.3);
+    });
+  },
+  lonceng: ctx => {
+    [[523,0],[659,0.45],[784,0.9],[1047,1.35]].forEach(([f,t]) => {
+      tone(ctx, f, 'sine', t, 1.5, 0.5);
+    });
+  },
+  alarm: ctx => {
+    for (let i = 0; i < 8; i++) {
+      tone(ctx, i % 2 === 0 ? 880 : 660, 'sawtooth', i * 0.22, 0.18, 0.4);
+    }
+  },
+  triple: ctx => {
+    [0, 0.5, 1.0].forEach(t => {
+      tone(ctx, 880, 'sine', t, 0.6, 0.6);
+      tone(ctx, 1320, 'sine', t + 0.05, 0.4, 0.25);
+    });
+  }
+};
+
+function bunyikanBel(jenis) {
+  // Cek apakah custom musik
+  if (jenis.startsWith('custom_')) {
+    const m = customMusik.find(m => m.id === jenis);
+    if (m) {
+      if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
+      currentAudio = new Audio(m.url);
+      currentAudio.play();
+    }
+  } else {
+    const ctx = getCtx();
+    (SOUNDS[jenis] || SOUNDS.ding)(ctx);
+  }
+  const icon = document.getElementById('bellIcon');
+  icon.classList.remove('ringing');
+  void icon.offsetWidth;
+  icon.classList.add('ringing');
+  setTimeout(() => icon.classList.remove('ringing'), 1500);
+}
+
+function testSound() {
+  bunyikanBel(document.getElementById('inSuara').value);
+}
+
+// ==================== NOTIF ====================
+let notifTimer;
+function tampilkanNotif(nama, waktu) {
+  clearTimeout(notifTimer);
+  const el = document.getElementById('notif');
+  document.getElementById('notifTitle').textContent = `🔔 ${nama}`;
+  document.getElementById('notifSub').textContent = `Waktu: ${waktu}`;
+  el.classList.add('show');
+  notifTimer = setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+// ==================== CRUD ====================
+function tambahJadwal() {
+  const nama = document.getElementById('inNama').value.trim();
+  const waktu = document.getElementById('inWaktu').value;
+  const suara = document.getElementById('inSuara').value;
+  const repeat = document.getElementById('inRepeat').checked;
+
+  if (!nama) return alert('⚠️ Nama jadwal tidak boleh kosong!');
+  if (!waktu) return alert('⚠️ Waktu tidak boleh kosong!');
+
+  jadwal.push({ id: Date.now(), nama, waktu, suara, repeat, done: false });
+  jadwal.sort((a, b) => a.waktu.localeCompare(b.waktu));
+  simpan();
+  renderTabel();
+
+  document.getElementById('inNama').value = '';
+  document.getElementById('inWaktu').value = '';
+  document.getElementById('inNama').focus();
+}
+
+function hapus(id) {
+  if (!confirm('Hapus jadwal ini?')) return;
+  jadwal = jadwal.filter(j => j.id !== id);
+  simpan();
+  renderTabel();
+}
+
+function simpan() {
+  localStorage.setItem('bel_jadwal', JSON.stringify(jadwal));
+}
+
+function getSuaraLabel(jenis) {
+  if (jenis.startsWith('custom_')) {
+    const m = customMusik.find(m => m.id === jenis);
+    return m ? `🎵 ${m.nama}` : '🎵 Custom';
+  }
+  const MAP = { ding:'🔔 Ding', sekolah:'🏫 Sekolah', digital:'📱 Digital', lonceng:'⛪ Lonceng', alarm:'⏰ Alarm', triple:'✨ Triple' };
+  return MAP[jenis] || jenis;
+}
+
+function getStatusBadge(j) {
+  if (j.done) return '<span class="badge b-done">✓ Selesai</span>';
+  const now = new Date();
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  const [h, m] = j.waktu.split(':').map(Number);
+  const jadMin = h * 60 + m;
+  const diff = jadMin - nowMin;
+
+  if (diff === 0) return '<span class="badge b-now">🔔 Sekarang!</span>';
+  if (diff > 0 && diff <= 10) return `<span class="badge b-soon">⏳ ${diff} mnt lagi</span>`;
+  if (!j.repeat && diff < 0) return '<span class="badge b-done">✓ Selesai</span>';
+  return '<span class="badge b-active">✅ Aktif</span>';
+}
+
+function renderTabel() {
+  const tbody = document.getElementById('tbody');
+  const emptyState = document.getElementById('emptyState');
+  const table = document.getElementById('jadwalTable');
+
+  if (jadwal.length === 0) {
+    emptyState.style.display = 'block';
+    table.style.display = 'none';
+    return;
+  }
+
+  emptyState.style.display = 'none';
+  table.style.display = '';
+
+  tbody.innerHTML = jadwal.map((j, i) => `
+    <tr>
+      <td style="color:var(--text-muted)">${i + 1}</td>
+      <td><strong>${j.nama}</strong></td>
+      <td style="font-size:15px;font-weight:800;letter-spacing:1px">${j.waktu}</td>
+      <td>${getSuaraLabel(j.suara)}</td>
+      <td>${j.repeat ? '🔁' : '1×'}</td>
+      <td>${getStatusBadge(j)}</td>
+      <td>
+        <div style="display:flex;gap:5px">
+          <button class="btn btn-sm btn-play" onclick="bunyikanBel('${j.suara}')" title="Tes suara">▶</button>
+          <button class="btn btn-sm btn-del" onclick="hapus(${j.id})">Hapus</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ==================== INIT ====================
+renderTabel();
+updateClock();
+setInterval(updateClock, 1000);
+setInterval(renderTabel, 30000); // refresh status badge
+</script>
+</body>
+</html>
