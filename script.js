@@ -310,14 +310,76 @@ function renderTabel() {
       <td>${formatHari(j.hari)}</td>
       <td>${getStatusBadge(j)}</td>
       <td>
-        <div style="display:flex;gap:5px">
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-sm btn-edit" onclick="bukaEdit(${j.id})" title="Edit">✏️</button>
           <button class="btn btn-sm btn-play" onclick="bunyikanBel('${j.suara}')" title="Tes suara">▶</button>
-          <button class="btn btn-sm btn-del" onclick="hapus(${j.id})">Hapus</button>
+          <button class="btn btn-sm btn-del" onclick="hapus(${j.id})" title="Hapus">🗑</button>
         </div>
       </td>
     </tr>
   `).join('');
 }
+
+// ==================== EDIT ====================
+let editId = null;
+
+function bukaEdit(id) {
+  const j = jadwal.find(j => j.id === id);
+  if (!j) return;
+  editId = id;
+
+  document.getElementById('editNama').value = j.nama;
+  document.getElementById('editWaktu').value = j.waktu;
+  document.getElementById('editSuara').value = j.suara;
+
+  // Set hari aktif di modal
+  document.querySelectorAll('#editDayPicker .day-btn').forEach(btn => {
+    btn.classList.toggle('active', j.hari.includes(parseInt(btn.dataset.day)));
+  });
+
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function tutupModal() {
+  document.getElementById('modalOverlay').classList.remove('show');
+  editId = null;
+}
+
+function simpanEdit() {
+  const nama = document.getElementById('editNama').value.trim();
+  const waktu = document.getElementById('editWaktu').value;
+  const suara = document.getElementById('editSuara').value;
+  const hari = [...document.querySelectorAll('#editDayPicker .day-btn.active')]
+    .map(b => parseInt(b.dataset.day));
+
+  if (!nama) return alert('⚠️ Nama tidak boleh kosong!');
+  if (!waktu) return alert('⚠️ Waktu tidak boleh kosong!');
+  if (hari.length === 0) return alert('⚠️ Pilih minimal 1 hari!');
+
+  const idx = jadwal.findIndex(j => j.id === editId);
+  if (idx === -1) return;
+
+  jadwal[idx] = { ...jadwal[idx], nama, waktu, suara, hari, done: false };
+  jadwal.sort((a, b) => a.waktu.localeCompare(b.waktu));
+  simpan();
+  renderTabel();
+  tutupModal();
+}
+
+function pilihHariEdit(mode) {
+  document.querySelectorAll('#editDayPicker .day-btn').forEach(btn => {
+    const d = parseInt(btn.dataset.day);
+    if (mode === 'semua')            btn.classList.add('active');
+    else if (mode === 'none')        btn.classList.remove('active');
+    else if (mode === 'senin-jumat') btn.classList.toggle('active', d >= 1 && d <= 5);
+    else if (mode === 'weekend')     btn.classList.toggle('active', d === 0 || d === 6);
+  });
+}
+
+// Tutup modal pakai tombol Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') tutupModal();
+});
 
 // ==================== INIT ====================
 renderTabel();

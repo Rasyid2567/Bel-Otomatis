@@ -4,17 +4,73 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bel Otomatis</title>
-
 <meta name="theme-color" content="#4faaff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Bel Otomatis">
-<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- Modal Edit -->
+<div class="modal-overlay" id="modalOverlay" onclick="tutupModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">✏️ Edit Jadwal</div>
+    <div class="form-grid">
+
+      <div class="fg">
+        <label>Nama Jadwal</label>
+        <input type="text" id="editNama" placeholder="cth: Masuk Kelas" />
+      </div>
+
+      <div class="fg">
+        <label>Waktu</label>
+        <input type="time" id="editWaktu" />
+      </div>
+
+      <div class="fg full">
+        <label>Pilih Suara Bel</label>
+        <div class="row-flex">
+          <select id="editSuara">
+            <option value="ding">🔔 Ding — Klasik & lembut</option>
+            <option value="sekolah">🏫 Bel Sekolah — Seperti bel kelas</option>
+            <option value="digital">📱 Digital Beep — Nada modern</option>
+            <option value="lonceng">⛪ Lonceng — Melodi lonceng</option>
+            <option value="alarm">⏰ Alarm — Bunyi keras</option>
+            <option value="triple">✨ Triple Ding — 3x dentingan</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fg full">
+        <label>Hari Aktif</label>
+        <div class="day-picker" id="editDayPicker">
+          <button type="button" class="day-btn" data-day="1">Sen</button>
+          <button type="button" class="day-btn" data-day="2">Sel</button>
+          <button type="button" class="day-btn" data-day="3">Rab</button>
+          <button type="button" class="day-btn" data-day="4">Kam</button>
+          <button type="button" class="day-btn" data-day="5">Jum</button>
+          <button type="button" class="day-btn" data-day="6">Sab</button>
+          <button type="button" class="day-btn" data-day="0">Min</button>
+        </div>
+        <div class="day-shortcuts">
+          <button type="button" class="btn-shortcut" onclick="pilihHariEdit('semua')">Semua</button>
+          <button type="button" class="btn-shortcut" onclick="pilihHariEdit('senin-jumat')">Sen–Jum</button>
+          <button type="button" class="btn-shortcut" onclick="pilihHariEdit('weekend')">Weekend</button>
+          <button type="button" class="btn-shortcut" onclick="pilihHariEdit('none')">Reset</button>
+        </div>
+      </div>
+
+      <div class="fg full" style="display:flex;gap:8px">
+        <button class="btn btn-primary" onclick="simpanEdit()" style="flex:1">💾 Simpan</button>
+        <button class="btn btn-cancel" onclick="tutupModal()" style="flex:1">Batal</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- Notifikasi -->
 <div class="notif-overlay" id="notif">
