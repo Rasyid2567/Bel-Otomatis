@@ -7,10 +7,12 @@
 <meta name="theme-color" content="#4faaff">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bel Otomatis">
-<link rel="manifest" href="manifest.json">
 <style>
+/* Warna pas loading browser shortcut */
+html { background: #4faaff; }
+
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
@@ -38,204 +40,7 @@ body {
   margin: 0 auto;
 }
 
-/* ===== HEADER ===== */
-.header { text-align: center; margin-bottom: 28px; }
-
-.bell-icon {
-  font-size: 48px;
-  display: block;
-  margin-bottom: 8px;
-  animation: swing 3s ease-in-out infinite;
-  transform-origin: top center;
-}
-
-@keyframes swing {
-  0%, 100% { transform: rotate(0deg); }
-  15% { transform: rotate(10deg); }
-  30% { transform: rotate(-10deg); }
-  45% { transform: rotate(6deg); }
-  60% { transform: rotate(-6deg); }
-  75% { transform: rotate(2deg); }
-}
-
-@keyframes ring {
-  0%, 100% { transform: rotate(0); }
-  20% { transform: rotate(25deg); }
-  40% { transform: rotate(-25deg); }
-  60% { transform: rotate(15deg); }
-  80% { transform: rotate(-15deg); }
-}
-
-.bell-icon.ringing { animation: ring 0.15s linear 8; }
-.header h1 { font-size: 26px; font-weight: 800; color: var(--primary); }
-.header p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
-
-/* ===== CLOCK ===== */
-.clock-bar {
-  background: var(--primary);
-  color: white;
-  border-radius: 16px;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 16px rgba(79,170,255,0.3);
-}
-
-.time-display { font-size: 38px; font-weight: 800; letter-spacing: 2px; line-height: 1; }
-.date-display { font-size: 13px; opacity: 0.8; margin-top: 4px; }
-.status-area { text-align: right; }
-
-.status-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: #4ade80;
-  display: inline-block;
-  box-shadow: 0 0 0 3px rgba(74,222,128,0.35);
-  animation: pulse 2s infinite;
-  vertical-align: middle;
-  margin-right: 4px;
-}
-
-@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); } }
-
-.status-text { font-size: 13px; opacity: 0.85; }
-.next-bell { font-size: 12px; opacity: 0.7; margin-top: 4px; }
-
-/* ===== CARD ===== */
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 16px;
-  box-shadow: var(--shadow);
-}
-
-.card-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
-
-/* ===== FORM ===== */
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.fg { display: flex; flex-direction: column; gap: 5px; }
-.fg.full { grid-column: 1 / -1; }
-
-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
-
-input[type="text"], input[type="time"], select {
-  padding: 10px 12px;
-  border: 1.5px solid var(--border);
-  border-radius: 10px;
-  font-family: inherit;
-  font-size: 14px;
-  background: white;
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.2s;
-  width: 100%;
-}
-
-input:focus, select:focus { border-color: var(--primary); }
-.row-flex { display: flex; gap: 8px; align-items: center; }
-.row-flex select { flex: 1; }
-
-/* ===== DAY PICKER ===== */
-.day-picker { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
-
-.day-btn {
-  padding: 6px 10px;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  background: white;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  min-width: 40px;
-  text-align: center;
-}
-
-.day-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
-.day-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
-
-.btn-shortcut {
-  padding: 4px 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: white;
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.btn-shortcut:hover { border-color: var(--primary); color: var(--primary); }
-
-/* ===== BUTTONS ===== */
-.btn { display: inline-block; border: none; border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.15s; }
-.btn-primary { background: var(--primary); color: white; padding: 12px; font-size: 14px; width: 100%; }
-.btn-primary:hover { background: #2e96f0; }
-.btn-sm { padding: 6px 9px; font-size: 14px; border-radius: 8px; }
-th:nth-child(7), td:nth-child(7) { min-width: 110px; width: 110px; }
-.btn-play { background: #e8f4e8; color: #166534; }
-.btn-play:hover { background: #d1f0d1; }
-.btn-del { background: #fee2e2; color: var(--red); }
-.btn-del:hover { background: #fecaca; }
-.btn-edit { background: #e8f0ff; color: #1d4ed8; }
-.btn-edit:hover { background: #dbeafe; }
-.btn-test { background: var(--primary-light); color: var(--primary); padding: 9px 14px; font-size: 13px; border-radius: 9px; }
-.btn-test:hover { background: #d0eaff; }
-.btn-cancel { background: #f1f5f9; color: var(--text-muted); padding: 12px; font-size: 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer; }
-.btn-cancel:hover { background: #e2e8f0; }
-
-/* ===== TABLE ===== */
-.table-wrap { width: 100%; overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
-thead { background: var(--primary-light); }
-th { padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary); white-space: nowrap; }
-td { padding: 10px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-tr:last-child td { border-bottom: none; }
-tr:hover td { background: #faf7f2; }
-td:nth-child(2) { word-break: break-word; }
-td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7) { white-space: nowrap; }
-
-
-/* ===== BADGE ===== */
-.badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
-.b-active { background: #dcfce7; color: #15803d; }
-.b-done { background: #f1f5f9; color: #64748b; }
-.b-soon { background: #fef9c3; color: #92400e; }
-.b-now { background: #fee2e2; color: #b91c1c; }
-.b-skip { background: #f1f5f9; color: #94a3b8; }
-
-/* ===== EMPTY STATE ===== */
-.empty-state { text-align: center; padding: 36px 20px; color: var(--text-muted); }
-.empty-state .ei { font-size: 36px; margin-bottom: 8px; }
-
-/* ===== NOTIFICATION ===== */
-.notif-overlay {
-  position: fixed;
-  top: 16px; right: 16px;
-  background: var(--accent);
-  color: white;
-  padding: 14px 18px;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-  z-index: 9999;
-  transform: translateX(300%);
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  max-width: 280px;
-}
-
-.notif-overlay.show { transform: translateX(0); }
-.notif-overlay .nt { font-size: 15px; font-weight: 700; }
-.notif-overlay .ns { font-size: 12px; opacity: 0.8; margin-top: 2px; }
-
-/* ===== SPLASH SCREEN ===== */
+/* ===== SPLASH ===== */
 #splash {
   position: fixed;
   inset: 0;
@@ -245,49 +50,171 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
   align-items: center;
   justify-content: center;
   z-index: 99999;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
 }
-
-#splash.hide {
-  opacity: 0;
-  visibility: hidden;
-}
-
-#splash .splash-icon {
-  font-size: 72px;
+#splash.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+#splash .s-icon {
+  font-size: 80px;
+  margin-bottom: 16px;
   animation: swing 1s ease-in-out infinite;
   transform-origin: top center;
-  margin-bottom: 16px;
 }
-
-#splash h2 {
-  color: white;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 1px;
-  margin-bottom: 32px;
-}
-
-.loading-dots {
-  display: flex;
-  gap: 8px;
-}
-
-.loading-dots span {
-  width: 10px;
-  height: 10px;
+#splash h2 { color: white; font-size: 26px; font-weight: 800; margin-bottom: 40px; }
+.dots { display: flex; gap: 10px; }
+.dots span {
+  width: 12px; height: 12px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.6);
-  animation: dotPulse 1.2s ease-in-out infinite;
+  background: rgba(255,255,255,0.5);
+  animation: dotpop 1.2s ease-in-out infinite;
+}
+.dots span:nth-child(2) { animation-delay: 0.2s; }
+.dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotpop {
+  0%,80%,100% { transform: scale(0.7); background: rgba(255,255,255,0.4); }
+  40% { transform: scale(1.3); background: white; }
 }
 
-.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dotPulse {
-  0%, 80%, 100% { transform: scale(0.7); background: rgba(255,255,255,0.4); }
-  40% { transform: scale(1.2); background: white; }
+/* ===== HEADER ===== */
+.header { text-align: center; margin-bottom: 28px; }
+.bell-icon {
+  font-size: 48px; display: block; margin-bottom: 8px;
+  animation: swing 3s ease-in-out infinite;
+  transform-origin: top center;
 }
+@keyframes swing {
+  0%,100% { transform: rotate(0deg); }
+  15% { transform: rotate(10deg); }
+  30% { transform: rotate(-10deg); }
+  45% { transform: rotate(6deg); }
+  60% { transform: rotate(-6deg); }
+  75% { transform: rotate(2deg); }
+}
+@keyframes ring {
+  0%,100% { transform: rotate(0); }
+  20% { transform: rotate(25deg); }
+  40% { transform: rotate(-25deg); }
+  60% { transform: rotate(15deg); }
+  80% { transform: rotate(-15deg); }
+}
+.bell-icon.ringing { animation: ring 0.15s linear 8; }
+.header h1 { font-size: 26px; font-weight: 800; color: var(--primary); }
+.header p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+
+/* ===== CLOCK ===== */
+.clock-bar {
+  background: var(--primary); color: white;
+  border-radius: 16px; padding: 16px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 16px rgba(79,170,255,0.3);
+}
+.time-display { font-size: 38px; font-weight: 800; letter-spacing: 2px; line-height: 1; }
+.date-display { font-size: 13px; opacity: 0.8; margin-top: 4px; }
+.status-area { text-align: right; }
+.status-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #4ade80; display: inline-block;
+  box-shadow: 0 0 0 3px rgba(74,222,128,0.35);
+  animation: pulse 2s infinite; vertical-align: middle; margin-right: 4px;
+}
+@keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(74,222,128,0.1); } }
+.status-text { font-size: 13px; opacity: 0.85; }
+.next-bell { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+
+/* ===== CARD ===== */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 20px; margin-bottom: 16px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s;
+}
+.card-title { font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+/* ===== FORM ===== */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fg { display: flex; flex-direction: column; gap: 5px; }
+.fg.full { grid-column: 1 / -1; }
+label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.6px; }
+input[type="text"], input[type="time"], select {
+  padding: 10px 12px; border: 1.5px solid var(--border);
+  border-radius: 10px; font-family: inherit; font-size: 14px;
+  background: white; color: var(--text); outline: none;
+  transition: border-color 0.2s; width: 100%;
+}
+input:focus, select:focus { border-color: var(--primary); }
+.row-flex { display: flex; gap: 8px; align-items: center; }
+.row-flex select { flex: 1; }
+
+/* ===== DAY PICKER ===== */
+.day-picker { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.day-btn {
+  padding: 6px 10px; border: 1.5px solid var(--border);
+  border-radius: 8px; background: white; font-family: inherit;
+  font-size: 12px; font-weight: 600; color: var(--text-muted);
+  cursor: pointer; transition: all 0.15s; min-width: 40px; text-align: center;
+}
+.day-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+.day-shortcuts { display: flex; gap: 6px; flex-wrap: wrap; }
+.btn-shortcut {
+  padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px;
+  background: white; font-family: inherit; font-size: 11px; font-weight: 600;
+  color: var(--text-muted); cursor: pointer; transition: all 0.15s;
+}
+.btn-shortcut:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ===== BUTTONS ===== */
+.btn { display: inline-block; border: none; border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+.btn-primary { background: var(--primary); color: white; padding: 12px; font-size: 14px; width: 100%; }
+.btn-primary:hover { background: #2e96f0; }
+.btn-sm { padding: 6px 9px; font-size: 14px; border-radius: 8px; }
+.btn-play { background: #e8f4e8; color: #166534; }
+.btn-play:hover { background: #d1f0d1; }
+.btn-edit { background: #e8f0ff; color: #1d4ed8; }
+.btn-edit:hover { background: #dbeafe; }
+.btn-del { background: #fee2e2; color: var(--red); }
+.btn-del:hover { background: #fecaca; }
+.btn-test { background: var(--primary-light); color: var(--primary); padding: 9px 14px; font-size: 13px; border-radius: 9px; }
+.btn-test:hover { background: #d0eaff; }
+.btn-cancel { display: inline-block; background: #f1f5f9; color: var(--text-muted); padding: 12px; font-size: 14px; border: none; border-radius: 10px; font-family: inherit; font-weight: 600; cursor: pointer; width: 100%; }
+.btn-cancel:hover { background: #e2e8f0; }
+
+/* ===== TABLE ===== */
+.table-wrap { width: 100%; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
+thead { background: var(--primary-light); }
+th { padding: 9px 10px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary); white-space: nowrap; }
+td { padding: 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #faf7f2; }
+td:nth-child(2) { word-break: break-word; }
+td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), td:nth-child(7) { white-space: nowrap; }
+th:nth-child(7), td:nth-child(7) { min-width: 108px; }
+
+/* ===== BADGE ===== */
+.badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.b-active { background: #dcfce7; color: #15803d; }
+.b-done   { background: #f1f5f9; color: #64748b; }
+.b-soon   { background: #fef9c3; color: #92400e; }
+.b-now    { background: #fee2e2; color: #b91c1c; }
+.b-skip   { background: #f1f5f9; color: #94a3b8; }
+
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 36px 20px; color: var(--text-muted); }
+.empty-state .ei { font-size: 36px; margin-bottom: 8px; }
+
+/* ===== NOTIF ===== */
+.notif-overlay {
+  position: fixed; top: 16px; right: 16px;
+  background: var(--accent); color: white;
+  padding: 14px 18px; border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 9999; transform: translateX(300%);
+  transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 280px;
+}
+.notif-overlay.show { transform: translateX(0); }
+.notif-overlay .nt { font-size: 15px; font-weight: 700; }
+.notif-overlay .ns { font-size: 12px; opacity: 0.8; margin-top: 2px; }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 560px) {
@@ -295,10 +222,8 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
   th:nth-child(4), td:nth-child(4),
   th:nth-child(5), td:nth-child(5) { display: none; }
   th, td { padding: 8px 6px; font-size: 12px; }
-  .btn-sm { padding: 5px 6px; font-size: 12px; }
-  th:nth-child(7), td:nth-child(7) { min-width: 90px; width: 90px; }
+  .btn-sm { padding: 5px 7px; font-size: 13px; }
 }
-
 @media (max-width: 480px) {
   .form-grid { grid-template-columns: 1fr; }
   .time-display { font-size: 30px; }
@@ -309,11 +234,9 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
 
 <!-- Splash Screen -->
 <div id="splash">
-  <span class="splash-icon">🔔</span>
+  <div class="s-icon">🔔</div>
   <h2>Bel Otomatis</h2>
-  <div class="loading-dots">
-    <span></span><span></span><span></span>
-  </div>
+  <div class="dots"><span></span><span></span><span></span></div>
 </div>
 
 <!-- Notifikasi -->
@@ -333,15 +256,15 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
 <div class="clock-bar">
   <div>
     <div class="time-display" id="clockDisplay">--:--:--</div>
-    <div class="date-display" id="dateDisplay">Memuat tanggal...</div>
+    <div class="date-display" id="dateDisplay">Memuat...</div>
   </div>
   <div class="status-area">
-    <div><span class="status-dot"></span><span class="status-text">Sistem Aktif</span></div>
+    <div><span class="status-dot"></span><span class="status-text">Aktif</span></div>
     <div class="next-bell" id="nextBellInfo">–</div>
   </div>
 </div>
 
-<!-- Form Input (mode Tambah & Edit) -->
+<!-- Form (mode Tambah & Edit) -->
 <div class="card" id="formCard">
   <div class="card-title" id="formTitle">➕ Tambah Jadwal Bel</div>
   <div class="form-grid">
@@ -372,7 +295,7 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
     </div>
     <div class="fg full">
       <label>Hari Aktif</label>
-      <div class="day-picker">
+      <div class="day-picker" id="dayPicker">
         <button type="button" class="day-btn" data-day="1">Sen</button>
         <button type="button" class="day-btn" data-day="2">Sel</button>
         <button type="button" class="day-btn" data-day="3">Rab</button>
@@ -388,14 +311,14 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
         <button type="button" class="btn-shortcut" onclick="pilihHari('none')">Reset</button>
       </div>
     </div>
-    <!-- Tombol Tambah (mode tambah) -->
+    <!-- Mode Tambah -->
     <div class="fg full" id="btnTambahWrap">
       <button class="btn btn-primary" onclick="tambahJadwal()">+ Tambah ke Daftar</button>
     </div>
-    <!-- Tombol Simpan + Batal (mode edit, tersembunyi awalnya) -->
-    <div class="fg full" id="btnEditWrap" style="display:none;gap:8px;flex-direction:row">
+    <!-- Mode Edit -->
+    <div class="fg full" id="btnEditWrap" style="display:none; flex-direction:row; gap:8px;">
       <button class="btn btn-primary" onclick="simpanEdit()" style="flex:1">💾 Simpan</button>
-      <button class="btn btn-cancel" onclick="batalEdit()" style="flex:1">✖ Batal</button>
+      <button class="btn-cancel" onclick="batalEdit()">✖ Batal</button>
     </div>
   </div>
 </div>
@@ -404,20 +327,14 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
 <div class="card">
   <div class="card-title">📋 Daftar Jadwal Bel</div>
   <div class="table-wrap">
-    <div id="emptyState" class="empty-state" style="display:none">
+    <div id="emptyState" class="empty-state">
       <div class="ei">📭</div>
       <div>Belum ada jadwal bel.<br>Tambahkan jadwal di atas.</div>
     </div>
-    <table id="jadwalTable">
+    <table id="jadwalTable" style="display:none">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Nama</th>
-          <th>Waktu</th>
-          <th>Suara</th>
-          <th>Hari</th>
-          <th>Status</th>
-          <th>Aksi</th>
+          <th>#</th><th>Nama</th><th>Waktu</th><th>Suara</th><th>Hari</th><th>Status</th><th>Aksi</th>
         </tr>
       </thead>
       <tbody id="tbody"></tbody>
@@ -428,12 +345,17 @@ td:nth-child(1), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child
 <script>
 // ==================== DATA ====================
 let jadwal = JSON.parse(localStorage.getItem('bel_jadwal') || '[]');
-
-// ==================== MUSIK CUSTOM ====================
 let customMusik = [];
 let currentAudio = null;
 let lastValidSuara = 'ding';
+let editId = null;
 
+// ==================== SPLASH ====================
+window.addEventListener('load', () => {
+  setTimeout(() => document.getElementById('splash').classList.add('hide'), 2000);
+});
+
+// ==================== CUSTOM MUSIK ====================
 function handleSuaraChange(sel) {
   if (sel.value === '__tambah__') {
     sel.value = lastValidSuara;
@@ -446,37 +368,27 @@ function handleSuaraChange(sel) {
 function handleUpload(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 10 * 1024 * 1024) { alert('⚠️ File terlalu besar! Maksimal 10MB.'); return; }
-  if (!file.type.startsWith('audio/')) { alert('⚠️ File harus berformat audio!'); return; }
+  if (file.size > 10 * 1024 * 1024) return alert('⚠️ File terlalu besar! Maks 10MB.');
+  if (!file.type.startsWith('audio/')) return alert('⚠️ File harus format audio!');
   const url = URL.createObjectURL(file);
   const id = 'custom_' + Date.now();
   const nama = file.name.replace(/\.[^.]+$/, '');
   customMusik.push({ id, nama, url });
-  addCustomOption(id, nama);
   const sel = document.getElementById('inSuara');
+  const opt = new Option(`🎵 ${nama}`, id);
+  sel.add(opt, [...sel.options].findIndex(o => o.value === '__tambah__') - 1);
   sel.value = id;
   lastValidSuara = id;
   input.value = '';
 }
 
-function addCustomOption(id, nama) {
-  const sel = document.getElementById('inSuara');
-  const sepIdx = [...sel.options].findIndex(o => o.value === '__tambah__') - 1;
-  const opt = new Option(`🎵 ${nama}`, id);
-  sel.add(opt, sepIdx);
-}
-
 // ==================== DAY PICKER ====================
-document.querySelectorAll('.day-picker:not(#editDayPicker) .day-btn').forEach(btn => {
-  btn.addEventListener('click', () => btn.classList.toggle('active'));
-});
-
-document.querySelectorAll('#editDayPicker .day-btn').forEach(btn => {
+document.querySelectorAll('#dayPicker .day-btn').forEach(btn => {
   btn.addEventListener('click', () => btn.classList.toggle('active'));
 });
 
 function pilihHari(mode) {
-  document.querySelectorAll('.day-picker:not(#editDayPicker) .day-btn').forEach(btn => {
+  document.querySelectorAll('#dayPicker .day-btn').forEach(btn => {
     const d = parseInt(btn.dataset.day);
     if (mode === 'semua')            btn.classList.add('active');
     else if (mode === 'none')        btn.classList.remove('active');
@@ -486,22 +398,45 @@ function pilihHari(mode) {
 }
 
 function getSelectedDays() {
-  return [...document.querySelectorAll('.day-picker:not(#editDayPicker) .day-btn.active')].map(b => parseInt(b.dataset.day));
+  return [...document.querySelectorAll('#dayPicker .day-btn.active')].map(b => parseInt(b.dataset.day));
 }
 
+// ==================== FORMAT ====================
 const NAMA_HARI = ['Min','Sen','Sel','Rab','Kam','Jum','Sab'];
+const HARI_PANJANG = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
 function formatHari(days) {
   if (!days || days.length === 0) return '—';
   if (days.length === 7) return '🔁 Setiap hari';
-  if (JSON.stringify([...days].sort((a,b)=>a-b)) === JSON.stringify([1,2,3,4,5])) return 'Sen–Jum';
-  if (JSON.stringify([...days].sort((a,b)=>a-b)) === JSON.stringify([0,6])) return 'Weekend';
-  return [...days].sort((a,b)=>a-b).map(d => NAMA_HARI[d]).join(', ');
+  const s = [...days].sort((a,b)=>a-b);
+  if (JSON.stringify(s) === JSON.stringify([1,2,3,4,5])) return 'Sen–Jum';
+  if (JSON.stringify(s) === JSON.stringify([0,6])) return 'Weekend';
+  return s.map(d => NAMA_HARI[d]).join(', ');
+}
+
+function getSuaraLabel(jenis) {
+  if (jenis.startsWith('custom_')) {
+    const m = customMusik.find(m => m.id === jenis);
+    return m ? `🎵 ${m.nama}` : '🎵 Custom';
+  }
+  return { ding:'🔔 Ding', sekolah:'🏫 Sekolah', digital:'📱 Digital', lonceng:'⛪ Lonceng', alarm:'⏰ Alarm', triple:'✨ Triple' }[jenis] || jenis;
+}
+
+function getStatusBadge(j) {
+  const now = new Date();
+  const hariIni = now.getDay();
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  const [h, m] = j.waktu.split(':').map(Number);
+  const diff = (h * 60 + m) - nowMin;
+  if (!j.hari.includes(hariIni)) return '<span class="badge b-skip">⏭ Bukan harinya</span>';
+  if (diff === 0)            return '<span class="badge b-now">🔔 Sekarang!</span>';
+  if (diff > 0 && diff <= 10) return `<span class="badge b-soon">⏳ ${diff} mnt lagi</span>`;
+  if (diff < 0)              return '<span class="badge b-done">✓ Selesai</span>';
+  return '<span class="badge b-active">✅ Aktif</span>';
 }
 
 // ==================== CLOCK ====================
-const HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-const BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 let lastRingKey = '';
 
 function updateClock() {
@@ -511,7 +446,7 @@ function updateClock() {
   const S = String(now.getSeconds()).padStart(2,'0');
   document.getElementById('clockDisplay').textContent = `${H}:${M}:${S}`;
   document.getElementById('dateDisplay').textContent =
-    `${HARI[now.getDay()]}, ${now.getDate()} ${BULAN[now.getMonth()]} ${now.getFullYear()}`;
+    `${HARI_PANJANG[now.getDay()]}, ${now.getDate()} ${BULAN[now.getMonth()]} ${now.getFullYear()}`;
 
   if (S === '00') {
     const nowHM = `${H}:${M}`;
@@ -534,9 +469,8 @@ function updateNextBell() {
   const now = new Date();
   const nowMin = now.getHours() * 60 + now.getMinutes();
   const hariIni = now.getDay();
-  const aktif = jadwal.filter(j => j.hari.includes(hariIni));
   let next = null, minDiff = Infinity;
-  aktif.forEach(j => {
+  jadwal.filter(j => j.hari.includes(hariIni)).forEach(j => {
     const [h, m] = j.waktu.split(':').map(Number);
     let diff = h * 60 + m - nowMin;
     if (diff <= 0) diff += 1440;
@@ -546,9 +480,9 @@ function updateNextBell() {
   if (next) {
     const jam = Math.floor(minDiff / 60);
     const mnt = minDiff % 60;
-    el.textContent = `Bel berikut: ${next.nama} — ${jam > 0 ? jam + 'j ' : ''}${mnt}mnt lagi`;
+    el.textContent = `Bel: ${next.nama} — ${jam > 0 ? jam+'j ' : ''}${mnt}mnt lagi`;
   } else {
-    el.textContent = 'Tidak ada jadwal aktif hari ini';
+    el.textContent = 'Tidak ada jadwal hari ini';
   }
 }
 
@@ -558,10 +492,8 @@ function getCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   return audioCtx;
 }
-
 function tone(ctx, freq, type, start, dur, vol) {
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
+  const osc = ctx.createOscillator(), gain = ctx.createGain();
   osc.connect(gain); gain.connect(ctx.destination);
   osc.type = type;
   osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
@@ -570,34 +502,25 @@ function tone(ctx, freq, type, start, dur, vol) {
   osc.start(ctx.currentTime + start);
   osc.stop(ctx.currentTime + start + dur + 0.01);
 }
-
 const SOUNDS = {
-  ding:    ctx => { tone(ctx,880,'sine',0,2.0,0.7); tone(ctx,1320,'sine',0.05,1.2,0.3); },
-  sekolah: ctx => { [0,.35,.70,1.05,1.40,1.75].forEach(t => tone(ctx,700,'square',t,.25,.35)); },
-  digital: ctx => { [440,550,660,770,880].forEach((f,i) => tone(ctx,f,'square',i*.18,.14,.3)); },
-  lonceng: ctx => { [[523,0],[659,.45],[784,.9],[1047,1.35]].forEach(([f,t]) => tone(ctx,f,'sine',t,1.5,.5)); },
-  alarm:   ctx => { for(let i=0;i<8;i++) tone(ctx,i%2===0?880:660,'sawtooth',i*.22,.18,.4); },
-  triple:  ctx => { [0,.5,1.0].forEach(t => { tone(ctx,880,'sine',t,.6,.6); tone(ctx,1320,'sine',t+.05,.4,.25); }); }
+  ding:    c => { tone(c,880,'sine',0,2,.7); tone(c,1320,'sine',.05,1.2,.3); },
+  sekolah: c => [0,.35,.7,1.05,1.4,1.75].forEach(t => tone(c,700,'square',t,.25,.35)),
+  digital: c => [440,550,660,770,880].forEach((f,i) => tone(c,f,'square',i*.18,.14,.3)),
+  lonceng: c => [[523,0],[659,.45],[784,.9],[1047,1.35]].forEach(([f,t]) => tone(c,f,'sine',t,1.5,.5)),
+  alarm:   c => { for(let i=0;i<8;i++) tone(c,i%2?660:880,'sawtooth',i*.22,.18,.4); },
+  triple:  c => [0,.5,1].forEach(t => { tone(c,880,'sine',t,.6,.6); tone(c,1320,'sine',t+.05,.4,.25); })
 };
-
 function bunyikanBel(jenis) {
   if (jenis.startsWith('custom_')) {
     const m = customMusik.find(m => m.id === jenis);
-    if (m) {
-      if (currentAudio) { currentAudio.pause(); currentAudio.currentTime = 0; }
-      currentAudio = new Audio(m.url);
-      currentAudio.play();
-    }
+    if (m) { if (currentAudio) { currentAudio.pause(); currentAudio.currentTime=0; } currentAudio = new Audio(m.url); currentAudio.play(); }
   } else {
     (SOUNDS[jenis] || SOUNDS.ding)(getCtx());
   }
   const icon = document.getElementById('bellIcon');
-  icon.classList.remove('ringing');
-  void icon.offsetWidth;
-  icon.classList.add('ringing');
+  icon.classList.remove('ringing'); void icon.offsetWidth; icon.classList.add('ringing');
   setTimeout(() => icon.classList.remove('ringing'), 1500);
 }
-
 function testSound() { bunyikanBel(document.getElementById('inSuara').value); }
 
 // ==================== NOTIF ====================
@@ -619,13 +542,10 @@ function tambahJadwal() {
   const hari = getSelectedDays();
   if (!nama) return alert('⚠️ Nama jadwal tidak boleh kosong!');
   if (!waktu) return alert('⚠️ Waktu tidak boleh kosong!');
-  if (hari.length === 0) return alert('⚠️ Pilih minimal 1 hari aktif!');
+  if (!hari.length) return alert('⚠️ Pilih minimal 1 hari!');
   jadwal.push({ id: Date.now(), nama, waktu, suara, hari });
-  jadwal.sort((a, b) => a.waktu.localeCompare(b.waktu));
-  simpan(); renderTabel();
-  document.getElementById('inNama').value = '';
-  document.getElementById('inWaktu').value = '';
-  document.getElementById('inNama').focus();
+  jadwal.sort((a,b) => a.waktu.localeCompare(b.waktu));
+  simpan(); renderTabel(); resetForm();
 }
 
 function hapus(id) {
@@ -637,41 +557,16 @@ function hapus(id) {
 function simpan() { localStorage.setItem('bel_jadwal', JSON.stringify(jadwal)); }
 
 // ==================== RENDER ====================
-function getSuaraLabel(jenis) {
-  if (jenis.startsWith('custom_')) {
-    const m = customMusik.find(m => m.id === jenis);
-    return m ? `🎵 ${m.nama}` : '🎵 Custom';
-  }
-  return { ding:'🔔 Ding', sekolah:'🏫 Sekolah', digital:'📱 Digital', lonceng:'⛪ Lonceng', alarm:'⏰ Alarm', triple:'✨ Triple' }[jenis] || jenis;
-}
-
-function getStatusBadge(j) {
-  const now = new Date();
-  const hariIni = now.getDay();
-  const nowMin = now.getHours() * 60 + now.getMinutes();
-  const [h, m] = j.waktu.split(':').map(Number);
-  const diff = (h * 60 + m) - nowMin;
-  if (!j.hari.includes(hariIni)) return '<span class="badge b-skip">⏭ Bukan harinya</span>';
-  if (diff === 0)  return '<span class="badge b-now">🔔 Sekarang!</span>';
-  if (diff > 0 && diff <= 10) return `<span class="badge b-soon">⏳ ${diff} mnt lagi</span>`;
-  if (diff < 0)   return '<span class="badge b-done">✓ Selesai hari ini</span>';
-  return '<span class="badge b-active">✅ Aktif</span>';
-}
-
 function renderTabel() {
   const tbody = document.getElementById('tbody');
   const emptyState = document.getElementById('emptyState');
   const table = document.getElementById('jadwalTable');
-  if (jadwal.length === 0) {
-    emptyState.style.display = 'block';
-    table.style.display = 'none';
-    return;
-  }
+  if (!jadwal.length) { emptyState.style.display='block'; table.style.display='none'; return; }
   emptyState.style.display = 'none';
   table.style.display = '';
-  tbody.innerHTML = jadwal.map((j, i) => `
+  tbody.innerHTML = jadwal.map((j,i) => `
     <tr>
-      <td style="color:var(--text-muted)">${i + 1}</td>
+      <td style="color:var(--text-muted)">${i+1}</td>
       <td><strong>${j.nama}</strong></td>
       <td style="font-size:15px;font-weight:800;letter-spacing:1px">${j.waktu}</td>
       <td>${getSuaraLabel(j.suara)}</td>
@@ -689,49 +584,24 @@ function renderTabel() {
 }
 
 // ==================== EDIT ====================
-let editId = null;
-
 function bukaEdit(id) {
   const j = jadwal.find(j => j.id === id);
   if (!j) return;
   editId = id;
-
-  // Isi form dengan data jadwal
   document.getElementById('inNama').value = j.nama;
   document.getElementById('inWaktu').value = j.waktu;
   document.getElementById('inSuara').value = j.suara;
-
-  // Set hari aktif
-  document.querySelectorAll('.day-picker .day-btn').forEach(btn => {
+  document.querySelectorAll('#dayPicker .day-btn').forEach(btn => {
     btn.classList.toggle('active', j.hari.includes(parseInt(btn.dataset.day)));
   });
-
-  // Switch tampilan ke mode Edit
   document.getElementById('formTitle').textContent = '✏️ Edit Jadwal';
   document.getElementById('formCard').style.borderColor = 'var(--primary)';
   document.getElementById('btnTambahWrap').style.display = 'none';
   document.getElementById('btnEditWrap').style.display = 'flex';
-
-  // Scroll ke form
   document.getElementById('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function batalEdit() {
-  editId = null;
-  resetForm();
-}
-
-function resetForm() {
-  document.getElementById('inNama').value = '';
-  document.getElementById('inWaktu').value = '';
-  document.getElementById('inSuara').value = 'ding';
-  document.querySelectorAll('.day-picker .day-btn').forEach(b => b.classList.remove('active'));
-
-  document.getElementById('formTitle').textContent = '➕ Tambah Jadwal Bel';
-  document.getElementById('formCard').style.borderColor = '';
-  document.getElementById('btnTambahWrap').style.display = '';
-  document.getElementById('btnEditWrap').style.display = 'none';
-}
+function batalEdit() { editId = null; resetForm(); }
 
 function simpanEdit() {
   const nama = document.getElementById('inNama').value.trim();
@@ -740,23 +610,29 @@ function simpanEdit() {
   const hari = getSelectedDays();
   if (!nama) return alert('⚠️ Nama tidak boleh kosong!');
   if (!waktu) return alert('⚠️ Waktu tidak boleh kosong!');
-  if (hari.length === 0) return alert('⚠️ Pilih minimal 1 hari!');
+  if (!hari.length) return alert('⚠️ Pilih minimal 1 hari!');
   const idx = jadwal.findIndex(j => j.id === editId);
   if (idx === -1) return;
   jadwal[idx] = { ...jadwal[idx], nama, waktu, suara, hari };
-  jadwal.sort((a, b) => a.waktu.localeCompare(b.waktu));
-  simpan(); renderTabel();
-  resetForm();
+  jadwal.sort((a,b) => a.waktu.localeCompare(b.waktu));
+  simpan(); renderTabel(); resetForm();
+}
+
+function resetForm() {
+  editId = null;
+  document.getElementById('inNama').value = '';
+  document.getElementById('inWaktu').value = '';
+  document.getElementById('inSuara').value = 'ding';
+  document.querySelectorAll('#dayPicker .day-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('formTitle').textContent = '➕ Tambah Jadwal Bel';
+  document.getElementById('formCard').style.borderColor = '';
+  document.getElementById('btnTambahWrap').style.display = '';
+  document.getElementById('btnEditWrap').style.display = 'none';
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') batalEdit(); });
 
 // ==================== INIT ====================
-// Sembunyikan splash setelah 2 detik
-setTimeout(() => {
-  document.getElementById('splash').classList.add('hide');
-}, 2000);
-
 renderTabel();
 updateClock();
 setInterval(updateClock, 1000);
