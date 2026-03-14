@@ -1,8 +1,6 @@
 const CACHE_NAME = 'bel-otomatis-v1';
 const ASSETS = [
   '/index.html',
-  '/style.css',
-  '/script.js',
   '/manifest.json'
 ];
 
